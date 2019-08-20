@@ -1,2 +1,4 @@
 /target
 **/*.rs.bk
+aarch64.rs
+arm.rs

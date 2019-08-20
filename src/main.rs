@@ -1,10 +1,11 @@
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::prelude::*;
 use std::io::{self, BufReader};
+use std::process::Command;
 
 const IN: &str = "neon.spec";
-const ARM_OUT: &str = "src/arm/neon/generated.rs";
-const AARCH64_OUT: &str = "src/aarch64/neon/generated.rs";
+const ARM_OUT: &str = "arm.rs";
+const AARCH64_OUT: &str = "aarch64.rs";
 
 const UINT_TYPES: [&'static str; 6] = [
     "uint8x8_t",
@@ -168,6 +169,36 @@ fn type_to_ext(t: &str) -> &str {
     }
 }
 
+fn values(t: &str, vs: &[String]) -> String {
+    if vs.len() == 1 && !t.contains("x") {
+        format!(": {} = {}", t, vs[0])
+    } else {
+        format!(
+            ": {} = {}::new({})",
+            t,
+            t,
+            vs.iter()
+                .map(|v| map_val(t, v))
+                .collect::<Vec<&str>>()
+                .join(", ")
+        )
+    }
+}
+
+fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
+    match v {
+        "FALSE" => "0",
+        "TRUE" => match &t[..3] {
+            "u8x" => "0xFF",
+            "u16" => "0xFF_FF",
+            "u32" => "0xFF_FF_FF_FF",
+            "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+            _ => panic!("No TRUE for type {}", t),
+        },
+        o => o,
+    }
+}
+
 fn main() -> io::Result<()> {
     let f = File::open(IN).expect("Failed to open neon.spec");
     let f = BufReader::new(f);
@@ -182,11 +213,11 @@ fn main() -> io::Result<()> {
     let mut a: Vec<String> = Vec::new();
     let mut b: Vec<String> = Vec::new();
     let mut e: Vec<String> = Vec::new();
+    //
+    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
+    //
     let mut out_arm = String::from(
         r#"
-//
-// THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-//
 use super::*;
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -202,11 +233,11 @@ mod test {
     use stdarch_test::simd_test;
 "#,
     );
+    //
+    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
+    //
     let mut out_aarch64 = String::from(
         r#"
-//
-// THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-//
 use super::*;
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -319,12 +350,11 @@ mod test {
                         let ext = type_to_ext(in_t);
 
                         format!(
-                            r#"
-    #[allow(improper_ctypes)]
+                            r#"#[allow(improper_ctypes)]
     extern "C" {{
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.{}")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
-        fn {}(a: {}, a: {}) -> {};
+        fn {}(a: {}, b: {}) -> {};
     }}
 "#,
                             link_arm.replace("_EXT_", ext),
@@ -423,7 +453,7 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
 pub unsafe fn {}(a: {}, b: {}) -> {} {{
     {}{}(a, b)
 }}
-            "#,
+"#,
                         current_comment, current_aarch64, name, in_t, in_t, out_t, link, current_fn,
                     );
                     let test = format!(
@@ -436,7 +466,7 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
         let r: {} = transmute({}(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }}
-            "#,
+"#,
                         name,
                         values(globla_t, &a),
                         values(globla_t, &b),
@@ -452,7 +482,9 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
         }
     }
     tests_arm.push('}');
+    tests_arm.push('\n');
     tests_aarch64.push('}');
+    tests_aarch64.push('\n');
 
     let mut file_arm = File::create(ARM_OUT)?;
     file_arm.write_all(out_arm.as_bytes())?;
@@ -461,35 +493,10 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
     let mut file_aarch = File::create(AARCH64_OUT)?;
     file_aarch.write_all(out_aarch64.as_bytes())?;
     file_aarch.write_all(tests_aarch64.as_bytes())?;
+    Command::new("rustfmt")
+        .arg(ARM_OUT)
+        .arg(AARCH64_OUT)
+        .status()
+        .expect("failed to execute process");
     Ok(())
-}
-
-fn values(t: &str, vs: &[String]) -> String {
-    if vs.len() == 1 && !t.contains("x") {
-        format!(":{} = {}", t, vs[0])
-    } else {
-        format!(
-            ":{} = {}::new({})",
-            t,
-            t,
-            vs.iter()
-                .map(|v| map_val(t, v))
-                .collect::<Vec<&str>>()
-                .join(", ")
-        )
-    }
-}
-
-fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
-    match v {
-        "FALSE" => "0",
-        "TRUE" => match &t[..3] {
-            "u8x" => "0xFF",
-            "u16" => "0xFF_FF",
-            "u32" => "0xFF_FF_FF_FF",
-            "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
-            _ => panic!("No TRUE for type {}", t),
-        },
-        o => o,
-    }
 }
