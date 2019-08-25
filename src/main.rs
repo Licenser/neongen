@@ -475,9 +475,7 @@ mod test {
             b = line[4..].split(',').map(|v| v.trim().to_string()).collect();
         } else if line.starts_with("validate ") {
             let e = line[9..].split(',').map(|v| v.trim().to_string()).collect();
-            current_tests.push((a, b, e));
-            a = Vec::new();
-            b = Vec::new();
+            current_tests.push((a.clone(), b.clone(), e));
         } else if line.starts_with("link-aarch64 = ") {
             link_aarch64 = Some(String::from(&line[15..]));
         } else if line.starts_with("link-arm = ") {
