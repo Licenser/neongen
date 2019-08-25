@@ -60,7 +60,10 @@ arm = vand
 aarch64 = and
 a = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x00
 b = 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F
-e = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x00
+validate 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x00
+a = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x00
+b = 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+validate 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 generate int*_t, uint*_t, int64x*_t, uint64x*_t
 
 /// Vector bitwise or (immediate, inclusive)
@@ -70,7 +73,7 @@ arm = vorr
 aarch64 = orr
 a = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
 b = 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-e = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+validate 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
 generate int*_t, uint*_t, int64x*_t, uint64x*_t
 
 /// Vector bitwise exclusive or (vector)
@@ -80,7 +83,7 @@ arm = veor
 aarch64 = eor
 a = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
 b = 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-e = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+validate 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
 generate int*_t, uint*_t, int64x*_t, uint64x*_t
 
 ////////////////////
@@ -92,7 +95,7 @@ name = vceq
 fn = simd_eq
 a = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
 b = 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmeq
 generate uint64x*_t, int64x1_t:uint64x1_t, int64x2_t:uint64x2_t, poly64x1_t:uint64x1_t, poly64x2_t:uint64x2_t
@@ -105,7 +108,7 @@ name = vceq
 fn = simd_eq
 a = 1.2, 3.4, 5.6, 7.8
 b = 1.2, 3.4, 5.6, 7.8
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = fcmeq
 generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
@@ -123,7 +126,7 @@ name = vcgt
 fn = simd_gt
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 aarch64 = cmgt
 generate int64x1_t:uint64x1_t, int64x2_t:uint64x2_t
 
@@ -135,7 +138,7 @@ name = vcgt
 fn = simd_gt
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmhi
 generate uint64x*_t
@@ -148,7 +151,7 @@ name = vcgt
 fn = simd_gt
 a = 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 
 b = 0.1, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = fcmgt
 generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
@@ -166,7 +169,7 @@ name = vclt
 fn = simd_lt
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 aarch64 = cmgt
 generate int64x1_t:uint64x1_t, int64x2_t:uint64x2_t
 
@@ -178,7 +181,7 @@ name = vclt
 fn = simd_lt
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmhi
 generate uint64x*_t
@@ -191,7 +194,7 @@ name = vclt
 fn = simd_lt
 a = 0.1, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8
 b = 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = fcmgt
 generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
@@ -209,7 +212,7 @@ name = vcle
 fn = simd_le
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmge
 generate int64x1_t:uint64x1_t, int64x2_t:uint64x2_t
@@ -222,7 +225,7 @@ name = vcle
 fn = simd_le
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmhs
 generate uint64x*_t
@@ -235,7 +238,7 @@ name = vcle
 fn = simd_le
 a = 0.1, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8
 b = 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 aarch64 = fcmge
 generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
 
@@ -252,7 +255,7 @@ name = vcge
 fn = simd_ge
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmge
 generate int64x1_t:uint64x1_t, int64x2_t:uint64x2_t
@@ -265,7 +268,7 @@ name = vcge
 fn = simd_ge
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = cmhs
 generate uint64x*_t
@@ -278,7 +281,7 @@ name = vcge
 fn = simd_ge
 a = 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 
 b = 0.1, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8
-e = TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+validate TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 
 aarch64 = fcmge
 generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
@@ -291,7 +294,7 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
 name = vqsub
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26
+validate 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26
 
 arm = uqsub
 link-arm = vqsubu._EXT_
@@ -307,7 +310,7 @@ generate int*_t
 name = vhadd
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29
+validate 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29
 
 arm = uhadd
 link-arm = vhaddu._EXT_
@@ -323,7 +326,7 @@ generate int*_t
 name = vrhadd
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29
+validate 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29
 
 arm = urhadd
 link-arm = vrhaddu._EXT_
@@ -339,7 +342,7 @@ generate int*_t
 name = vqadd
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58
+validate 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58
 
 arm = uqadd
 link-arm = vqaddu._EXT_
@@ -351,28 +354,30 @@ link-arm = vqadds._EXT_
 link-aarch64 = sqadd._EXT_
 generate int*_t
 
-/// Signed saturating accumulate of unsigned value
-name = vuqadd
-a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
-b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58
+// requires 1st and second argument to be different, this not implemented yet
+// /// Signed saturating accumulate of unsigned value
+// 
+// name = vuqadd
+// a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
+// b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+// e = 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58
 
 // it seems like we don't have those in rustland :( 
 // aarch64 = suqadd 
 // link-aarch64 = usqadd._EXT_
 // generate int64x*_t
 
-arm = suqadd
-link-arm = vuqadds._EXT_
-link-aarch64 = suqadd._EXT_
-generate int*_t
+/ arm = suqadd
+// link-arm = vuqadds._EXT_
+// link-aarch64 = suqadd._EXT_
+// generate int*_t
 
 
 /// Multiply
 name = vmul
 a = 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
 b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-e = 1, 4, 3, 8, 5, 12, 7, 16, 9, 20, 11, 24, 13, 28, 15, 32
+validate 1, 4, 3, 8, 5, 12, 7, 16, 9, 20, 11, 24, 13, 28, 15, 32
 arm = mul
 fn = simd_mul
 generate int*_t, uint*_t
@@ -382,7 +387,7 @@ name = vmul
 fn = simd_mul
 a = 1.0, 2.0, 1.0, 2.0
 b = 2.0, 3.0, 4.0, 5.0
-e = 2.0, 6.0, 4.0, 10.0
+validate 2.0, 6.0, 4.0, 10.0
 
 aarch64 = mul
 generate float64x*_t
@@ -395,7 +400,7 @@ generate float*_t
 name = vsub
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-e = 0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14
+validate 0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14
 arm = sub
 fn = simd_sub
 generate int*_t, uint*_t, int64x*_t, uint64x*_t
@@ -405,7 +410,7 @@ name = vsub
 fn = simd_sub
 a = 1.0, 4.0, 3.0, 8.0
 b = 1.0, 2.0, 3.0, 4.0
-e = 0.0, 2.0, 0.0, 4.0
+validate 0.0, 2.0, 0.0, 4.0
 
 aarch64 = sub
 generate float64x*_t
@@ -418,7 +423,7 @@ generate float*_t
 name = vhsub
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-e = 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7
+validate 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7
 
 arm = uhsub
 link-arm = vhsubu._EXT_
