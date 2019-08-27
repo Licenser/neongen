@@ -185,16 +185,68 @@ fn values(t: &str, vs: &[String]) -> String {
     }
 }
 
+fn max_val(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "0xFF",
+        "u16" => "0xFF_FF",
+        "u32" => "0xFF_FF_FF_FF",
+        "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+        "i8x" => "0x7F",
+        "i16" => "0x7F_FF",
+        "i32" => "0x7F_FF_FF_FF",
+        "i64" => "0x7F_FF_FF_FF_FF_FF_FF_FF",
+        _ => panic!("No TRUE for type {}", t),
+    }
+}
+
+fn min_val(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "0",
+        "u16" => "0",
+        "u32" => "0",
+        "u64" => "0",
+        "i8x" => "0x80",
+        "i16" => "0x80_00",
+        "i32" => "0x80_00_00_00",
+        "i64" => "-9223372036854775808i64",
+        _ => panic!("No TRUE for type {}", t),
+    }
+}
+
+fn true_val(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "0xFF",
+        "u16" => "0xFF_FF",
+        "u32" => "0xFF_FF_FF_FF",
+        "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+        _ => panic!("No TRUE for type {}", t),
+    }
+}
+
+fn ff_val(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "0xFF",
+        "u16" => "0xFF_FF",
+        "u32" => "0xFF_FF_FF_FF",
+        "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+        "i8x" => "0xFF",
+        "i16" => "0xFF_FF",
+        "i32" => "0xFF_FF_FF_FF",
+        "i64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+        _ => panic!("No TRUE for type {}", t),
+    }
+}
+
+fn false_val(_t: &str) -> &'static str {
+    "0"
+}
 fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
     match v {
-        "FALSE" => "0",
-        "TRUE" => match &t[..3] {
-            "u8x" => "0xFF",
-            "u16" => "0xFF_FF",
-            "u32" => "0xFF_FF_FF_FF",
-            "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
-            _ => panic!("No TRUE for type {}", t),
-        },
+        "FALSE" => false_val(t),
+        "TRUE" => true_val(t),
+        "MAX" => min_val(t),
+        "MIN" => max_val(t),
+        "FF" => ff_val(t),
         o => o,
     }
 }
@@ -418,6 +470,7 @@ use stdarch_test::assert_instr;
     let mut tests_arm = String::from(
         r#"
 #[cfg(test)]
+#[allow(overflowing_literals)]
 mod test {
     use super::*;
     use crate::core_arch::simd::*;
